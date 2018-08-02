@@ -67,6 +67,7 @@ class Monitor():
         observer = Observer()
         self.eventHandler = MonitorEventHandler(self)
         for path in self.paths:
+            logging.debug(path)
             if os.path.exists(path):
                 observer.schedule(self.eventHandler, path, recursive=True)
         observer.start()
@@ -142,7 +143,7 @@ class Monitor():
         
         if not (os.path.exists(comic.path)):
             # file is missing, remove it from the comic table, add it to deleted table
-            logging.debug(u"Removing missing {0}".format(comic.path))
+            logging.info(u"Removing missing {0}".format(comic.path))
             remove = True
         elif not inFolderlist(comic.path, pathlist):
             logging.debug(u"Removing unwanted {0}".format(comic.path))
@@ -154,7 +155,7 @@ class Monitor():
             curr = datetime.utcfromtimestamp(os.path.getmtime(comic.path))
             prev = comic.mod_ts
             if curr != prev:
-                logging.debug(u"Removed modifed {0}".format(comic.path))
+                logging.info(u"Removed modifed {0}".format(comic.path))
                 remove = True
            
         return remove
@@ -226,11 +227,13 @@ class Monitor():
         filelist = utils.get_recursive_filelist(dirs)
         for path in filelist:
             current_set.add((path, datetime.utcfromtimestamp(os.path.getmtime(path))))
+	logging.info(current_set)
         logging.info("NEW -- current_set size [%d]" % len(current_set))
 
-        for comic_id, path, md_ts in self.library.getComicPaths():
-            db_set.add((path, md_ts))
+        for comic_id, path, mod_ts in self.library.getComicPaths():
+            db_set.add((path, mod_ts))
             ix[path] = comic_id
+	logging.info(db_set)
         to_add = current_set - db_set
         to_remove = db_set - current_set
         logging.info("NEW -- db_set size [%d]" % len(db_set))
@@ -261,6 +264,7 @@ class Monitor():
         md_list = []
         self.read_count = 0
         for filename in filelist:
+	    logging.info(u"Scanning File {0}".format(filename))
             md = self.getComicMetadata(filename)
             if md is not None:
                 md_list.append(md)

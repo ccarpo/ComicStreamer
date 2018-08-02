@@ -2,6 +2,7 @@
 from datetime import datetime
 import dateutil
 import os
+import logging
 
 from sqlalchemy import func, distinct
 from sqlalchemy.orm import subqueryload
