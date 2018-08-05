@@ -1,3 +1,10 @@
+#### Work on this fork (ccarpo)
+- fixed some bugs in the library table when using with webroot
+- added a language column to the database (and the library table)
+- added 7zip support for cb7 files
+- added user-dir startup option
+- added Dockerfile for running in Docker
+
 #### Work on this fork (september 5 2015)
  - added webroot option to configuration, useful for proxy pass configurations (issue #24)
  - little unrar automation: after pip installation, run `paver libunrar'
@@ -66,6 +73,8 @@ Optional:
 
 * pybonjour (for automatic server discovery)
 
+If you want to run it with docker you only need:
+* Docker
 
 ------
 #### Installation
@@ -79,6 +88,8 @@ Settings, database, and logs are kept in the user folder:
 * On Mac OS: "~/Library/Application Support/ComicStreamer"
 * On Windows:  "%APPDATA%\ComicStreamer"
 
+Or if you set --user-dir you can define where these things should be stored
+
 ----------
 #### Running
 
@@ -89,6 +100,20 @@ For the binary builds, run from the installed app icon.  There should be no task
 
 A web browser should automatically open to "http://localhost:32500".  On your first run, use the "config" page to set the comic folders, and
 the "control" page to restart the server.  It will start scanning, and all comics in the given folders and sub folders will be added to database.
+
+----------
+#### Running in Docker
+
+
+Download the Dockerfile navigate to the download folder
+Build a Docker image with
+	docker build -t yourname/comicstreamer .
+Run the image with 
+	docker run -d --name comicstreamer -p 32500:32500 -v /etc/comicstreamer:/config -v /path/to/your/comics:/data yourname/comicstreamer
+
+If you want to customize the code just rename Dockerfile.CodeInVolume to Dockerfile, build it as described above (if you have to rebuild it use the --no-cache flag)
+Run the image with 
+	sudo docker run -d --name comicstreamer -p 32500:32500 -v /etc/comicstreamer:/config -v /path/to/your/comics:/data -v /path/to/your/code:/code yourname/comicstreamer
 
 Some tips:
 
