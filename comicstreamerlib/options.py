@@ -23,6 +23,7 @@ import getopt
 import platform
 import os
 import traceback
+import logging
 
 import csversion
 
@@ -129,8 +130,12 @@ for comics to add to the database (persisted)
                 
         filename_encoding = sys.getfilesystemencoding()
         if len(args) > 0:
+
+            logging.info("len(args)")
+            logging.info(args)
             #self.folder_list = [os.path.normpath(a.decode(filename_encoding)) for a in args]
             self.folder_list = [os.path.abspath(os.path.normpath(unicode(a.decode(filename_encoding)))) for a in args]
+            logging.info(self.folder_list)
         
         # remove certain private flags from args
         try:
