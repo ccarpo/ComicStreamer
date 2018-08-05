@@ -46,4 +46,4 @@ VOLUME ["/config","/data"]
 
 # Final setup
 EXPOSE 32500
-ENTRYPOINT ["/opt/ComicStreamer/comicstreamer", "--webroot=/comicstreamer", "--nobrowser", "--user-dir=/config"]
+ENTRYPOINT ["/opt/comicstreamer/comicstreamer", "--webroot=/comicstreamer", "--nobrowser", "--user-dir=/config"]
